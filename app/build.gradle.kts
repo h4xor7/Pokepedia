@@ -1,11 +1,9 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
-
 }
 
 android {
@@ -105,14 +103,17 @@ dependencies {
 
 
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.46.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.46.1")
+   // implementation("com.google.dagger:hilt-android:2.46.1")
+   // kapt("com.google.dagger:hilt-android-compiler:2.46.1")
 
-    //implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    kapt ("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
 
     implementation("androidx.palette:palette-ktx:1.0.0")
 
 
+}
+kapt {
+    correctErrorTypes = true
 }
