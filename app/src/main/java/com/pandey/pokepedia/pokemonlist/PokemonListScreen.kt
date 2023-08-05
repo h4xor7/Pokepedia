@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.pandey.pokepedia.R
@@ -73,37 +75,11 @@ fun PokemonListScreen(
             PokemonList(navController = navController)
         }
 
-        /*Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                TopAppBar()
-            }
-        ) {
-
-            Spacer(modifier = Modifier.height(20.dp).padding(it))
-        }*/
 
     }
 
 }
 
-
-@Composable
-fun SearchBar(
-    modifier: Modifier = Modifier,
-    hint: String = "",
-    onSearch: (String) -> Unit = {}
-) {
-    var text = remember {
-        mutableStateOf("")
-    }
-    val isHintDisplayed = remember {
-        mutableStateOf(hint != "")
-    }
-    Box(modifier = modifier) {
-
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,7 +115,7 @@ fun PokemonList(
             pokemonList.size / 2 + 1
         }
         items(itemCount) {
-            if (it >= itemCount - 1 && !endReached) {
+            if (it >= itemCount - 1 && !endReached && !isLoading) {
                 viewModel.loadPokemonPaginated()
             }
             PokepediaRow(rowIndex = it, entries = pokemonList, navController = navController)
@@ -148,7 +124,6 @@ fun PokemonList(
         }
 
     }
-
 
 
 
@@ -195,16 +170,20 @@ fun PokepediaEntry(
     ) {
         Column {
 
+
+
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(entry.imageUrl)
-                    .memoryCacheKey(entry.imageUrl)
                     .diskCacheKey(entry.imageUrl)
                     .diskCachePolicy(CachePolicy.ENABLED)
+                    .memoryCacheKey(entry.imageUrl)
                     .memoryCachePolicy(CachePolicy.ENABLED)
                     .crossfade(true)
                     .build(),
                 contentDescription = entry.pokemonName,
+                error = painterResource(R.drawable.ic_broken_image),
+                placeholder =  painterResource(R.drawable.loading_img),
                 onSuccess = { success ->
                     val drawable = success.result.drawable
                     viewModel.calcDominantColor(drawable) { color ->
@@ -212,10 +191,16 @@ fun PokepediaEntry(
                     }
                 },
 
+
                 modifier = Modifier
                     .size(120.dp)
                     .align(CenterHorizontally)
             )
+
+
+
+
+
 
             Text(
                 text = entry.pokemonName,
@@ -242,11 +227,10 @@ fun PokepediaRow(
     ) {
 
 
-        PokepediaEntry(
-            entry = entries[rowIndex * 2],
-            navController = navController
-        )
-
+    PokepediaEntry(
+        entry = entries[rowIndex * 2],
+        navController = navController
+    )
 
 
 }
@@ -267,3 +251,5 @@ fun RetrySection(
         }
     }
 }
+
+
