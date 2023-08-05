@@ -1,6 +1,10 @@
 package com.pandey.pokepedia.util
 
+import android.content.Context
 import androidx.compose.ui.graphics.Color
+import coil.ImageLoader
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
 import com.pandey.pokepedia.data.remote.responses.Stat
 import com.pandey.pokepedia.data.remote.responses.Type
 import com.pandey.pokepedia.ui.theme.AtkColor
@@ -75,4 +79,23 @@ fun parseStatToAbbr(stat: Stat): String {
         "speed" -> "Spd"
         else -> ""
     }
+}
+
+
+fun getImageLoader(context:Context): ImageLoader {
+    val imageLoader = ImageLoader.Builder(context)
+        .memoryCache {
+            MemoryCache.Builder(context)
+                .maxSizePercent(0.25)
+                .build()
+        }
+        .diskCache {
+            DiskCache.Builder()
+                .directory(context.cacheDir.resolve("image_cache"))
+                .maxSizePercent(0.02)
+                .build()
+        }
+        .build()
+
+    return imageLoader
 }
