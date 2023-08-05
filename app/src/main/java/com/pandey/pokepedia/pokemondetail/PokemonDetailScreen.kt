@@ -51,8 +51,8 @@ import com.pandey.pokepedia.data.remote.responses.Pokemon
 import com.pandey.pokepedia.data.remote.responses.Type
 import com.pandey.pokepedia.util.Resource
 import com.pandey.pokepedia.util.parseTypeToColor
-import java.lang.Math.round
 import java.util.Locale
+import kotlin.math.roundToInt
 
 @Composable
 fun PokemonDetailScreen(
@@ -108,24 +108,16 @@ fun PokemonDetailScreen(
                 .fillMaxSize()) {
             if(pokemonInfo is Resource.Success) {
                 pokemonInfo.data?.sprites?.let {
-                   /* CoilImage(
-                        data = it.frontDefault,
-                        contentDescription = pokemonInfo.data.name,
-                        fadeIn = true,
-                        modifier = Modifier
-                            .size(pokemonImageSize)
-                            .offset(y = topPadding)
-                    )*/
 
 
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(it.frontDefault)
-                            .memoryCacheKey(it.frontDefault)
-                            .diskCacheKey(it.frontDefault)
+                            .data(it.other.officialArtwork.frontDefault)
+                            .memoryCacheKey(it.other.officialArtwork.frontDefault)
+                            .diskCacheKey(it.other.officialArtwork.frontDefault)
                             .diskCachePolicy(CachePolicy.ENABLED)
                             .memoryCachePolicy(CachePolicy.ENABLED)
-                            .crossfade(true)
+                            .crossfade(false)
                             .build(),
                         contentDescription = pokemonInfo.data.name,
                         modifier = Modifier
@@ -265,10 +257,10 @@ fun PokemonDetailDataSection(
     sectionHeight: Dp = 80.dp
 ) {
     val pokemonWeightInKg = remember {
-        round(pokemonWeight * 100f) / 1000f
+        (pokemonWeight * 100f).roundToInt() / 1000f
     }
     val pokemonHeightInMeters = remember {
-        round(pokemonHeight * 100f) / 1000f
+        (pokemonHeight * 100f).roundToInt() / 1000f
     }
     Row(
         modifier = Modifier

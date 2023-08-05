@@ -73,37 +73,12 @@ fun PokemonListScreen(
             PokemonList(navController = navController)
         }
 
-        /*Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                TopAppBar()
-            }
-        ) {
 
-            Spacer(modifier = Modifier.height(20.dp).padding(it))
-        }*/
 
     }
 
 }
 
-
-@Composable
-fun SearchBar(
-    modifier: Modifier = Modifier,
-    hint: String = "",
-    onSearch: (String) -> Unit = {}
-) {
-    var text = remember {
-        mutableStateOf("")
-    }
-    val isHintDisplayed = remember {
-        mutableStateOf(hint != "")
-    }
-    Box(modifier = modifier) {
-
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -148,7 +123,6 @@ fun PokemonList(
         }
 
     }
-
 
 
 
@@ -202,7 +176,7 @@ fun PokepediaEntry(
                     .diskCacheKey(entry.imageUrl)
                     .diskCachePolicy(CachePolicy.ENABLED)
                     .memoryCachePolicy(CachePolicy.ENABLED)
-                    .crossfade(true)
+                    .crossfade(false)
                     .build(),
                 contentDescription = entry.pokemonName,
                 onSuccess = { success ->
