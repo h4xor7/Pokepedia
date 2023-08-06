@@ -51,6 +51,7 @@ class PokemonListViewModel @Inject constructor(
 
                         //val url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
 
+                        //val url ="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${number}.svg"
                         PokepediaListEntry(entry.name.capitalize(Locale.ROOT), url, number.toInt())
                     }
                     curPage++

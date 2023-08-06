@@ -114,6 +114,9 @@ dependencies {
 
     implementation("androidx.palette:palette-ktx:1.0.0")
 
+    //glide
+    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.1")
+
 
 }
 kapt {

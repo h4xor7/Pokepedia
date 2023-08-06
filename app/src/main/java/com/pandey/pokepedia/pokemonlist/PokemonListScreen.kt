@@ -49,6 +49,8 @@ import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.pandey.pokepedia.R
 import com.pandey.pokepedia.data.remote.models.PokepediaListEntry
 import com.pandey.pokepedia.ui.theme.RobotoCondensed
@@ -145,6 +147,7 @@ fun PokemonList(
 }
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PokepediaEntry(
     entry: PokepediaListEntry,
@@ -171,19 +174,18 @@ fun PokepediaEntry(
         Column {
 
 
-
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(entry.imageUrl)
+                    .memoryCacheKey(entry.imageUrl)
                     .diskCacheKey(entry.imageUrl)
                     .diskCachePolicy(CachePolicy.ENABLED)
-                    .memoryCacheKey(entry.imageUrl)
                     .memoryCachePolicy(CachePolicy.ENABLED)
-                    .crossfade(true)
+                    .crossfade(false)
                     .build(),
                 contentDescription = entry.pokemonName,
                 error = painterResource(R.drawable.ic_broken_image),
-                placeholder =  painterResource(R.drawable.loading_img),
+                placeholder = painterResource(R.drawable.loading_img),
                 onSuccess = { success ->
                     val drawable = success.result.drawable
                     viewModel.calcDominantColor(drawable) { color ->
@@ -196,7 +198,6 @@ fun PokepediaEntry(
                     .size(120.dp)
                     .align(CenterHorizontally)
             )
-
 
 
 
