@@ -15,7 +15,7 @@ Pokepedia is a user-friendly Android app that allows you to explore a comprehens
 
 ## Installation
 
-1. Download the Pokepedia APK from the [Releases](https://github.com/yourusername/pokepedia/releases) section.
+1. Download the Pokepedia APK from the [Releases](https://github.com/h4xor7/Pokepedia/releases/download/alpha/app-debug.apk) section.
 2. Enable installation from unknown sources on your Android device.
 3. Install the APK on your device.
 
