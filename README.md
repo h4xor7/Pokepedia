@@ -1,4 +1,5 @@
-# Pokepedia Android App
+# Pokepedia:Your Ultimate Pokemon Encyclopedia
+![screen_shot.png](snap/pokepedia.png)
 
 
 
