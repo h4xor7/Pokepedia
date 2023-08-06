@@ -32,6 +32,8 @@ Pokepedia is a user-friendly Android app that allows you to explore a comprehens
 - Retrofit for API integration
 - Coil for image loading
 - JetPack Compose
+- Palette
+
 
 
 ## Contributions
