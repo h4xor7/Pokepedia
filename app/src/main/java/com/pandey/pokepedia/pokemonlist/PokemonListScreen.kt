@@ -1,5 +1,6 @@
 package com.pandey.pokepedia.pokemonlist
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,11 +47,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import coil.compose.SubcomposeAsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.pandey.pokepedia.R
 import com.pandey.pokepedia.data.remote.models.PokepediaListEntry
 import com.pandey.pokepedia.ui.theme.RobotoCondensed
@@ -174,30 +181,76 @@ fun PokepediaEntry(
         Column {
 
 
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(entry.imageUrl)
-                    .memoryCacheKey(entry.imageUrl)
-                    .diskCacheKey(entry.imageUrl)
-                    .diskCachePolicy(CachePolicy.ENABLED)
-                    .memoryCachePolicy(CachePolicy.ENABLED)
-                    .crossfade(false)
-                    .build(),
+            /*    AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(entry.imageUrl)
+                        .memoryCacheKey(entry.imageUrl)
+                        .diskCacheKey(entry.imageUrl)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
+                        .crossfade(false)
+                        .build(),
+                    contentDescription = entry.pokemonName,
+                    error = painterResource(R.drawable.ic_broken_image),
+                    placeholder = painterResource(R.drawable.loading_img),
+                    onSuccess = { success ->
+                        val drawable = success.result.drawable
+                        viewModel.calcDominantColor(drawable) { color ->
+                            dominantColor = color
+                        }
+                    },
+
+
+                    modifier = Modifier
+                        .size(120.dp)
+                        .align(CenterHorizontally)
+                )*/
+
+            GlideImage(
+                model = entry.imageUrl,
                 contentDescription = entry.pokemonName,
-                error = painterResource(R.drawable.ic_broken_image),
-                placeholder = painterResource(R.drawable.loading_img),
-                onSuccess = { success ->
-                    val drawable = success.result.drawable
-                    viewModel.calcDominantColor(drawable) { color ->
-                        dominantColor = color
-                    }
-                },
-
-
                 modifier = Modifier
                     .size(120.dp)
                     .align(CenterHorizontally)
-            )
+            ) { builder ->
+
+                builder
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.ic_broken_image)
+                    .placeholder(R.drawable.loading_img)
+                    .transition(withCrossFade())
+
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            if (resource != null) {
+                                viewModel.calcDominantColor(resource) { color ->
+                                    dominantColor = color
+                                }
+                            }
+                            return false
+                        }
+
+                    })
+
+
+            }
+
+
 
 
 
