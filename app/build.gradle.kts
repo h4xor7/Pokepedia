@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.pandey.pokepedia"
+    namespace = "com.appweaver.pokepedia"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.pandey.pokepedia"
+        applicationId = "com.appweaver.pokepedia"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
